@@ -2,6 +2,7 @@
 import express, { Express, json, urlencoded, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { SampleRouter } from "./routers/sample.router";
+import { AuthRouter } from "./routers/auth.router";
 
 const PORT = 7070;
 
@@ -24,8 +25,10 @@ export default class App {
     // To define routes config from routers directory
     private routes(): void {
         const sampleRouter = new SampleRouter();
+        const authRouter = new AuthRouter();
 
         this.app.use("/samples", sampleRouter.getRouter());
+        this.app.use("/auth", authRouter.getRouter());
     }
 
     // Deefine error handling
