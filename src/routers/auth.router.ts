@@ -13,7 +13,9 @@ export class AuthRouter {
 
     private initializeRoutes(): void {
         this.router.post("/regis",
+            body("username").notEmpty().withMessage("Username required"),
             body("email").notEmpty().withMessage("Email required"),
+            body("email").isEmail().withMessage("Email WRONG"),
             (req: Request, res: Response, next: NextFunction) => {
                 const errorValidator = validationResult(req); // untuk menampung jika ada error dari middleware validator
                 if (!errorValidator.isEmpty()) {
