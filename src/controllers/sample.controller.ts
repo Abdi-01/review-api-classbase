@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { transporter } from "../helpers/nodemailer";
 
 export class SampleController {
     async getSample(req: Request, res: Response) {
@@ -30,4 +31,20 @@ export class SampleController {
             return res.status(500).send(error);
         }
     }
+
+    async sendMail(req: Request, res: Response) {
+        try {
+            await transporter.sendMail({
+                from: "Review API Mailer",
+                to: req.body.email,
+                subject: "Welcome to mailer",
+                html: "<h1>Thank you</h1>"
+            })
+
+            return res.status(200).send("Send email success");
+        } catch (error: any) {
+            console.log(error);
+            return res.status(500).send(error);
+        }
+    };
 }
