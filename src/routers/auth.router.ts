@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { AuthController } from "../controllers/auth.controller";
-import { body, validationResult } from "express-validator";
+// import { body, validationResult } from "express-validator";
 import { regisValidation } from "../middleware/validator";
 export class AuthRouter {
     private router: Router;
