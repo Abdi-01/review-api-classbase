@@ -5,6 +5,8 @@ import { transporter } from "../helpers/nodemailer";
 import path from "path";
 import fs from "fs";
 import handlebars from "handlebars";
+import { sign } from "jsonwebtoken";
+
 export class AuthController {
     async registerUser(req: Request, res: Response, next: NextFunction) {
         try {
@@ -43,6 +45,39 @@ export class AuthController {
         } catch (error: any) {
             console.log(error);
             next(error); // meneruskan error ke handleError yang ada di app.ts
+        }
+    }
+
+    async forgotPassword(req: Request, res: Response, next: NextFunction) {
+        try {
+            // 1. Check user by email
+            const checkUser = await prisma.user.findUnique({
+                where: { email: req.body.email }
+            })
+            if (checkUser) {
+                // 2. if exist create token and send with email
+                const token = sign({
+                    id: checkUser?.id,
+                    role: checkUser?.role,
+                    email: checkUser?.email
+                }, "scretJWT");
+
+                const templateMail = path.join(__dirname, "../templates", "forgotpassword.hbs")
+                const templateSource = fs.readFileSync(templateMail, "utf-8");
+                const compileTemplate = handlebars.compile(templateSource);
+
+                await transporter.sendMail({
+                    from: "Free Blog",
+                    to: req.body.email,
+                    subject: "Request Reset Password",
+                    html: compileTemplate({ url: `http://localhost:7070/reset-password?tkn=${token}` })
+                })
+            } else {
+                // 3. if not exist throw error
+                throw new Error("Account is not exist")
+            }
+        } catch (error: any) {
+            next(error);
         }
     }
 }
