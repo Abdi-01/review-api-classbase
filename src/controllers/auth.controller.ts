@@ -70,13 +70,26 @@ export class AuthController {
                     from: "Free Blog",
                     to: req.body.email,
                     subject: "Request Reset Password",
-                    html: compileTemplate({ url: `http://localhost:7070/reset-password?tkn=${token}` })
+                    html: compileTemplate({ url: `http://localhost:3000/reset-password?tkn=${token}` })
+                })
+
+                return res.status(200).send({
+                    success: true,
+                    message: "Check your email"
                 })
             } else {
                 // 3. if not exist throw error
                 throw new Error("Account is not exist")
             }
         } catch (error: any) {
+            next(error);
+        }
+    }
+
+    async resetPassword(req: Request, res: Response, next: NextFunction) {
+        try {
+
+        } catch (error) {
             next(error);
         }
     }
