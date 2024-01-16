@@ -5,6 +5,13 @@ export const regisValidation = [
     body("username").notEmpty().withMessage("Username required"),
     body("email").notEmpty().withMessage("Email required"),
     body("email").isEmail().withMessage("Email WRONG"),
+    body("password").notEmpty().withMessage("Password required"),
+    body("password").isStrongPassword({
+        minLength: 6,
+        minLowercase: 1,
+        minNumbers: 1,
+        minSymbols: 0
+    }).withMessage("Password min 6, alphabet min 1, digit min 1"),
     (req: Request, res: Response, next: NextFunction) => {
         const errorValidator = validationResult(req); // untuk menampung jika ada error dari middleware validator
         if (!errorValidator.isEmpty()) {
