@@ -88,6 +88,9 @@ export class AuthController {
 
     async resetPassword(req: Request, res: Response, next: NextFunction) {
         try {
+            console.log("Data from token :", req.dataUser);
+            console.log("Data pass :", req.body.password);
+            console.log("Data confirmPass :", req.body.confirmPassword);
 
         } catch (error) {
             next(error);
