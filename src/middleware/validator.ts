@@ -10,8 +10,9 @@ export const regisValidation = [
         minLength: 6,
         minLowercase: 1,
         minNumbers: 1,
-        minSymbols: 0
-    }).withMessage("Password min 6, alphabet min 1, digit min 1"),
+        minSymbols: 0,
+        minUppercase: 0
+    }),
     (req: Request, res: Response, next: NextFunction) => {
         const errorValidator = validationResult(req); // untuk menampung jika ada error dari middleware validator
         if (!errorValidator.isEmpty()) {
