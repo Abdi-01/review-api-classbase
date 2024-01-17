@@ -3,6 +3,7 @@ import express, { Express, json, urlencoded, Request, Response, NextFunction } f
 import cors from "cors";
 import { SampleRouter } from "./routers/sample.router";
 import { AuthRouter } from "./routers/auth.router";
+import { redisClient } from "./helpers/redis";
 
 const PORT = 7070;
 
@@ -39,7 +40,8 @@ export default class App {
         })
     }
 
-    public start(): void {
+    public async start(): Promise<void> {
+        await redisClient.connect(); // connect to redis
         this.app.listen(PORT, () => {
             console.log(`API RUNNING : http://localhost:${PORT}/`);
         })
