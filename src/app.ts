@@ -4,6 +4,7 @@ import cors from "cors";
 import { SampleRouter } from "./routers/sample.router";
 import { AuthRouter } from "./routers/auth.router";
 import { redisClient } from "./helpers/redis";
+import { PostsRouter } from "./routers/posts.router";
 
 const PORT = 7070;
 
@@ -27,9 +28,11 @@ export default class App {
     private routes(): void {
         const sampleRouter = new SampleRouter();
         const authRouter = new AuthRouter();
+        const postsRouter = new PostsRouter();
 
         this.app.use("/samples", sampleRouter.getRouter());
         this.app.use("/auth", authRouter.getRouter());
+        this.app.use("/posts", postsRouter.getRouter());
     }
 
     // Deefine error handling
