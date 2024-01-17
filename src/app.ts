@@ -9,7 +9,7 @@ import { PostsRouter } from "./routers/posts.router";
 const PORT = 7070;
 
 export default class App {
-    private app: Express;
+    readonly app: Express;
 
     constructor() {
         this.app = express();
@@ -30,6 +30,9 @@ export default class App {
         const authRouter = new AuthRouter();
         const postsRouter = new PostsRouter();
 
+        this.app.get("/", async (req: Request, res: Response) => {
+            return res.status(200).send("<h1>Welcome to Free Blog API</h1>")
+        })
         this.app.use("/samples", sampleRouter.getRouter());
         this.app.use("/auth", authRouter.getRouter());
         this.app.use("/posts", postsRouter.getRouter());
