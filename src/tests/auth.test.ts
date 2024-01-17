@@ -17,8 +17,8 @@ describe("TEST AUTH", () => {
 
     });
 
-    afterAll(() => {
-
+    afterAll(async () => {
+        await prisma.$disconnect();
     });
 
     it("POST /auth/regis", async () => {
@@ -30,5 +30,5 @@ describe("TEST AUTH", () => {
 
         expect(regisResult.status).toBe(201);
         expect(regisResult.body.success).toBeTruthy();
-    })
+    });
 });
