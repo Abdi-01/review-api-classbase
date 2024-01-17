@@ -6,6 +6,7 @@ import path from "path";
 import fs from "fs";
 import handlebars from "handlebars";
 import { sign } from "jsonwebtoken";
+import { redisClient } from "../helpers/redis";
 
 export class AuthController {
     async registerUser(req: Request, res: Response, next: NextFunction) {
@@ -61,6 +62,9 @@ export class AuthController {
                     role: checkUser?.role,
                     email: checkUser?.email
                 }, "scretJWT");
+
+                // Menyimpan token yang aktif kedalam redis
+                await redisClient.setEx(`forgot:${req.body.email}`, 3600, token);
 
                 const templateMail = path.join(__dirname, "../templates", "forgotpassword.hbs")
                 const templateSource = fs.readFileSync(templateMail, "utf-8");
